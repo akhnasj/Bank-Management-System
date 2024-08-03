@@ -54,14 +54,14 @@ public class Withdrawal extends JFrame implements ActionListener {
         b1.setBounds(700, 362, 150, 35);
         b1.setBackground(new Color(65, 125, 128));
         b1.setForeground(Color.WHITE);
-        // b1.addActionListener(this);
+        b1.addActionListener(this);
         l3.add(b1);
 
         b2 = new JButton("BACK");
         b2.setBounds(700, 406, 150, 35);
         b2.setBackground(new Color(65, 125, 128));
         b2.setForeground(Color.WHITE);
-        // b2.addActionListener(this);
+        b2.addActionListener(this);
         l3.add(b2);
 
         setLayout(null);
@@ -72,6 +72,7 @@ public class Withdrawal extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == b1)
         try {
             String amount = textField.getText();
             Date date = new Date();
@@ -100,6 +101,9 @@ public class Withdrawal extends JFrame implements ActionListener {
         } catch (Exception E) {
             
         }
+    } else if (e.getSource == b2) {
+        setVisible(false);
+        // new main_class(pin);
     }
     public static void main(String[] args) {
         new Withdrawal("");
