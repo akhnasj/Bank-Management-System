@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.DataBufferByte;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -22,6 +21,7 @@ public class Deposit extends JFrame implements ActionListener{
 
     Deposit(String pin) {
         this.pin = pin;
+
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/atm.png"));
         Image i2 = i1.getImage().getScaledInstance(1550,830 , Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
