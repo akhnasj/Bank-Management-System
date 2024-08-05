@@ -34,10 +34,9 @@ Bank Management System means banks provide comprehensive electronic fund transfe
 
 It's fast, easy and puts you in complete control
  – 
- you decide who to transferfunds, checking of the account details. Receive and pay all your paper bills at onesite
- – 
+ you decide who to transferfunds, checking of the account details. Receive and pay all your paper bills at onesite.
 
- Plus, you can enhance the convenience of transferring funds by receiving your bills electronically, checking statuses of accounts and viewing the statements can possible with this system. You can do this from one secure online location, in just afew minutes.
+ Plus, you can enhance the convenience of transferring funds by receiving your bills electronically, checking statuses of accounts and viewing the statements can possible with this system. You can do this from one secure online location, in just a few minutes.
 
  Banking system provides the greater opportunity to interact with Account holder. But in regular system there are no more interactions with an account holder or trustee. Authorities of Bank Management System can Provides the greater knowledge on Bank Management System and they can effectively.
 
@@ -53,7 +52,11 @@ The project has been planned to be having the view of distributed architecture, 
  planned using the “Database” methodology. The standards of security and data
  protective mechanism have been given a big choice for proper usage. The application takes care of different modules and their associated reports, which are produced as per the applicable strategies and standards.
 
- The entire project has been developed keeping in view of the distributed client server computing technology, in mind. The specification has been normalized up to 3NF to eliminate all the anomalies that may arise due to the database transaction that are executed by the general users and the organizational administration. The user interfaces are browser specific to give distributed accessibility for the overall system. The internal database has been selected as MySQL. The basic constructs of table spaces, clusters and indexes have been exploited to provide higher consistency and reliability for the data storage. The MySQL was a choice as it provides the constructs of high-level reliability and security. The total front end was dominated using the JAVA JDK 1.7. At all proper levels high care was taken to check that the system manages the data consistency with proper business rules or validations. The database connectivity was planned
+ The entire project has been developed keeping in view of the distributed client server computing technology, in mind. The specification has been normalized up to 3NF to eliminate all the anomalies that may arise due to the database transaction that are executed by the general users and the organizational administration. The user interfaces are browser specific to give distributed accessibility for the overall system. The internal database has been selected as MySQL. 
+ 
+ The basic constructs of table spaces, clusters and indexes have been exploited to provide higher consistency and reliability for the data storage. The MySQL was a choice as it provides the constructs of high-level reliability and security. The total front end was dominated using the JAVA JDK 1.7. At all proper levels high care was taken to check that the system manages the data consistency with proper business rules or validations. 
+ 
+ The database connectivity was planned
 using the latest “Database connection” technology provided by MySQL
 . The authentication and authorization was crosschecked at all the relevant stages. The user level accessibility has been restricted into two zones namely.
 
