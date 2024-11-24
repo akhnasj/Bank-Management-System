@@ -1,6 +1,6 @@
-<a href="https://github.com/akhnasj/Bank-Management-System/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=akhnasj/Bank-Management-System" />
-</a>
+<!--   <a href="https://github.com/akhnasj/Bank-Management-System/graphs/contributors">
+<!--   <img src="https://contrib.rocks/image?repo=akhnasj/Bank-Management-System" /> -->
+<!-- </a> -->
 
 ## OVERVIEW
 
