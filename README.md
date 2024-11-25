@@ -68,9 +68,7 @@ using the latest “Database connection” technology provided by MySQL
 </a>
 
 
-> **Akhna S J**, **Abshira K A**, **Manjima Manoj**\
-> *Master of Computer Applications*,\
-> *CET*
+> **Akhna S J**, **Abshira K A**, **Manjima Manoj**
 
 
 
