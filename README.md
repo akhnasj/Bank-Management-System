@@ -68,9 +68,8 @@ using the latest “Database connection” technology provided by MySQL
 </a>
 
 
-> **Akhna S J**\
-> **Abshira K A**\
-> **Manjima Manoj**
+> **Akhna S J**, **Abshira K A**, **Manjima Manoj**\
+> *College of Engineering, Trivandrum*
 
 
 
