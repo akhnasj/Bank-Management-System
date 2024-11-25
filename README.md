@@ -69,7 +69,7 @@ using the latest “Database connection” technology provided by MySQL
 
 
 > **Akhna S J**, **Abshira K A**, **Manjima Manoj**\
-> *Master of Computer Applications*,
+> *Master of Computer Applications*\
 > *CET*
 
 
