@@ -70,6 +70,7 @@ using the latest “Database connection” technology provided by MySQL
 > **Akhna S J**,
 > **Abshira K A**,
 > **Manjima Manoj**\
+> 
 > *Masters in Computer Applications*,\
 > *College of Enginnering, Trivandrum*
 >(*2023-2025*)
