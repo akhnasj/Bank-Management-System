@@ -1,6 +1,3 @@
-<!--   <a href="https://github.com/akhnasj/Bank-Management-System/graphs/contributors">
-<!--   <img src="https://contrib.rocks/image?repo=akhnasj/Bank-Management-System" /> -->
-<!-- </a> -->
 
 ## OVERVIEW
 
@@ -65,7 +62,9 @@ using the latest “Database connection” technology provided by MySQL
 . The authentication and authorization was crosschecked at all the relevant stages. The user level accessibility has been restricted into two zones namely.
 
 
-
+<a href="https://github.com/akhnasj/Bank-Management-System/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=akhnasj/Bank-Management-System" />
+</a>
 
 
 
