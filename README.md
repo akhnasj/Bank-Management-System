@@ -67,7 +67,7 @@ using the latest “Database connection” technology provided by MySQL
   <img src="https://contrib.rocks/image?repo=akhnasj/Bank-Management-System" />
 </a>
 
->
+>\
 > **Akhna S J**,
 > **Abshira K A**,
 > **Manjima Manoj**\
