@@ -91,7 +91,7 @@ public class Withdraw extends JFrame implements ActionListener {
 
             // If Withdraw button is pressed
             if (e.getSource() == b1) {
-                if (textField.getText().equals("")) {
+                if (amount.equals("")) {
                     JOptionPane.showMessageDialog(null, "Please enter the amount you want to withdraw");
                 } else {
                     // Checking current balance by querying the transactions table
@@ -102,7 +102,7 @@ public class Withdraw extends JFrame implements ActionListener {
                     while (resultSet.next()) {
                         if (resultSet.getString("type").equals("deposit")) {
                             balance += resultSet.getDouble("amount");
-                        } else if (resultSet.getString("type").equals("Withdraw")) {
+                        } else if (resultSet.getString("type").equals("withdraw")) {
                             balance -= resultSet.getDouble("amount");
                         }
                     }
@@ -110,7 +110,7 @@ public class Withdraw extends JFrame implements ActionListener {
                     // Check if balance is sufficient
                     double withdrawalAmount = Double.parseDouble(amount);
                     if (balance < withdrawalAmount) {
-                        JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                        JOptionPane.showMessageDialog(null, "Insufficient Balance. Your current balance is Rs. " + balance);
                         return;
                     }
 
