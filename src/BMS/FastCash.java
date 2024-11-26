@@ -9,17 +9,17 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class FastCash extends JFrame implements  ActionListener{
-    JButton b1,b2,b3,b4,b5,b6,b7;
+    JButton b1, b2, b3, b4, b5, b6, b7;
     String pinno;
 
     FastCash(String pinno){
-        this.pinno=pinno;
+        this.pinno = pinno;
 
         setSize(1000,800);
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setBackground(Color.white);
+        setBackground(Color.white);
 
         JLabel label = new JLabel("SELECT WITHDRAWAL AMOUNT");
         label.setBounds(230,80,700,35);
@@ -42,7 +42,6 @@ public class FastCash extends JFrame implements  ActionListener{
         b2.setFocusable(false);
         b2.addActionListener(this);
         add(b2);
-
 
         b3 = new JButton("Rs.1000");
         b3.setBounds(100,350,230,35);
@@ -69,7 +68,6 @@ public class FastCash extends JFrame implements  ActionListener{
         b5.addActionListener(this);
         add(b5);
 
-
         b6 = new JButton("Rs.10000");
         b6.setBounds(530,450,230,35);
         b6.setBackground(Color.BLACK);
@@ -92,56 +90,47 @@ public class FastCash extends JFrame implements  ActionListener{
     }
 
     @Override
-   public void  actionPerformed(ActionEvent e){
-    if(e.getSource()==b7){
-        setVisible(false);
-        new Main(pinno);
-    }else {
-        String amount = ((JButton)e.getSource()).getText().substring(4);//e.getSource returns an object
-        Conn c= new Conn();
-        Date date = new Date();
-        try{
+    public void  actionPerformed(ActionEvent e){
+        if(e.getSource()==b7){
+            setVisible(false);
+            new Main(pinno);
+        }else{
+            String amount = ((JButton)e.getSource()).getText().substring(4);//e.getSource returns an object
+            Conn c= new Conn();
+            Date date = new Date();
+            try{
+                ResultSet resultSet = c.statement.executeQuery("select * from bank where pinno = '"+pinno+"'");
+                int balance =0;
+                while(resultSet.next()){
+                    if(resultSet.getString("type").equals("Deposit")){
+                        balance+=Integer.parseInt(resultSet.getString("amount"));
 
-            ResultSet resultSet = c.statement.executeQuery("select * from bank where pinno = '"+pinno+"'");
-            int balance =0;
-            while(resultSet.next()){
-                if(resultSet.getString("type").equals("Deposit")){
+                    }else{
+                        balance-=Integer.parseInt(resultSet.getString("amount"));
+                    }
+                }
 
-                    balance+=Integer.parseInt(resultSet.getString("amount"));
+                String num = "17";
 
-                }else{
-                    balance-=Integer.parseInt(resultSet.getString("amount"));
+                if(e.getSource()!=b7 && balance < Integer.parseInt(amount)){
+                    JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                    return;
 
                 }
+                c.statement.executeUpdate("insert into bank values('"+pinno+"','"+date+"','withdrawal','"+amount+"')");
+                JOptionPane.showMessageDialog(null, "Rs. "+amount+ "Debited Successfully");
             }
-            String num = "17";
-
-            if(e.getSource()!=b7 && balance < Integer.parseInt(amount)){
-                JOptionPane.showMessageDialog(null, "Insufficient Balance");
-                return;
-
+            catch(Exception E){
+                E.printStackTrace();
             }
 
-            c.statement.executeUpdate("insert into bank values('"+pinno+"','"+date+"','withdrawal','"+amount+"')");
-
-            JOptionPane.showMessageDialog(null, "Rs. "+amount+ "Debited Successfully");
-        
+            setVisible(false);
+            new Main(pinno);
         }
-    catch(Exception E){
-            E.printStackTrace();
-        }
-
-        setVisible(false);
-        new Main(pinno);
-
     }
 
-   }
-
-
-   public static void main(String[] args){
-    new FastCash(" ");
-
-   }
+    public static void main(String[] args){
+        new FastCash(" ");
+    }
     
 }
