@@ -1,3 +1,5 @@
+package BMS;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -6,8 +8,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Pin extends JFrame implements ActionListener{
-    JTextField t1,t2;
-    JButton change,back;
+    JTextField t1, t2;
+    JButton change, back;
     String pinno;
     Pin(String pinno){
 
@@ -17,7 +19,7 @@ public class Pin extends JFrame implements ActionListener{
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setBackground(Color.white);
+        setBackground(Color.white);
 
         JLabel label1 = new JLabel("Change Your PIN");
         label1.setBounds(180,50,300,50);
@@ -59,7 +61,6 @@ public class Pin extends JFrame implements ActionListener{
         back.addActionListener(this);
         add(back);
 
-        
         setVisible(true);
     }
 
@@ -68,10 +69,9 @@ public class Pin extends JFrame implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
         
         try{
-
             String p1=t1.getText();
             String p2=t2.getText();
 
@@ -82,29 +82,28 @@ public class Pin extends JFrame implements ActionListener{
             if(e.getSource()==change){
                 if(t1.getText().equals("")){
                     JOptionPane.showMessageDialog(null, "Enter New PIN");
+
                 }else if(t2.getText().equals("")){
                     JOptionPane.showMessageDialog(null, "Re-Enter the PIN");
+
                 }else{
-            
+                    Conn c = new Conn();
+                    //String q1="update bank set pinno = '"+p1+"' where pinno = '"+pinno+"'";
+                    String q2 = "update login set pinno = '"+p1+"' where pinno='"+pinno+"'";
+                    String q3 = "update signupthree set pinno ='"+p1+"' where pinno='"+pinno+'"';
 
-           connection c = new connection();
-            //String q1="update bank set pinno = '"+p1+"' where pinno = '"+pinno+"'";
-            String q2 = "update login set pinno = '"+p1+"' where pinno='"+pinno+"'";
-            String q3 = "update signupthree set pinno ='"+p1+"' where pinno='"+pinno+'"';
+                    //c.statement.executeUpdate(q1);
+                    c.statement.executeUpdate(q2);
+                    c.statement.executeUpdate(q3);
 
-            //c.statement.executeUpdate(q1);
-            c.statement.executeUpdate(q2);
-            c.statement.executeUpdate(q3);
-
-            JOptionPane.showMessageDialog(null, "PIN updated successfully");
-            setVisible(false);
-            new Main(pinno);
+                    JOptionPane.showMessageDialog(null, "PIN updated successfully");
+                    setVisible(false);
+                    new Main(pinno);
+                }
+            }else if(e.getSource()==back){
+                new Main(pinno);
+                setVisible(false);
             }
-        }else if(e.getSource()==back){
-            new Main(pinno);
-            setVisible(false);
-
-        }
         
 
         }catch(Exception E){

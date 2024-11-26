@@ -1,5 +1,6 @@
-import javax.swing.*;
+package BMS;
 
+import javax.swing.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,11 +8,11 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.util.Date;
 
-public class Fastcash extends JFrame implements  ActionListener{
+public class FastCash extends JFrame implements  ActionListener{
     JButton b1,b2,b3,b4,b5,b6,b7;
     String pinno;
 
-    Fastcash(String pinno){
+    FastCash(String pinno){
         this.pinno=pinno;
 
         setSize(1000,800);
@@ -97,7 +98,7 @@ public class Fastcash extends JFrame implements  ActionListener{
         new Main(pinno);
     }else {
         String amount = ((JButton)e.getSource()).getText().substring(4);//e.getSource returns an object
-        connection c= new connection();
+        Conn c= new Conn();
         Date date = new Date();
         try{
 
@@ -139,7 +140,7 @@ public class Fastcash extends JFrame implements  ActionListener{
 
 
    public static void main(String[] args){
-    new Fastcash(" ");
+    new FastCash(" ");
 
    }
     
