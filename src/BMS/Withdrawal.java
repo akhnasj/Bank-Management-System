@@ -101,9 +101,10 @@ public class Withdrawal extends JFrame implements ActionListener {
         } catch (Exception E) {
             
         }
-    } else if (e.getSource == b2) {
-        setVisible(false);
-        // new main_class(pin);
+        else if (e.getSource() == b2){
+            setVisible(false);
+            // new main_class(pin);
+        }
     }
     public static void main(String[] args) {
         new Withdrawal("");
