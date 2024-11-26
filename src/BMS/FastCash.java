@@ -5,14 +5,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FastCash extends JFrame implements ActionListener {
     JButton b1, b2, b3, b4, b5, b6, b7;
     String pinno;
 
-    FastCash(String pinno) {
-        this.pinno = pinno;
+    FastCash(String pin) {
+        this.pinno = pin;
 
         // Set frame size and layout
         setSize(1550, 1080);
@@ -105,18 +107,16 @@ public class FastCash extends JFrame implements ActionListener {
             int amount = Integer.parseInt(amountText);
             Conn c = new Conn();
             Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = sdf.format(date);
+            
             try {
                 // Query to get the current balance of the user
-                ResultSet resultSet = c.statement.executeQuery("SELECT * FROM transactions WHERE pinno = '" + pinno + "'");
+                ResultSet resultSet = c.statement.executeQuery("SELECT SUM(CASE WHEN type = 'deposit' THEN amount ELSE -amount END) AS balance FROM transactions WHERE pin = '" + pinno + "'");
                 int balance = 0;
-
-                // Calculate the current balance by processing the deposit and withdrawal transactions
-                while (resultSet.next()) {
-                    if (resultSet.getString("type").equals("Deposit")) {
-                        balance += Integer.parseInt(resultSet.getString("amount"));
-                    } else {
-                        balance -= Integer.parseInt(resultSet.getString("amount"));
-                    }
+                
+                if (resultSet.next()) {
+                    balance = resultSet.getInt("balance");
                 }
 
                 // Check if balance is sufficient for withdrawal
@@ -126,14 +126,14 @@ public class FastCash extends JFrame implements ActionListener {
                 }
 
                 // Log the transaction (withdrawal)
-                c.statement.executeUpdate("INSERT INTO transactions VALUES ('" + pinno + "','" + date + "','withdrawal','" + amount + "')");
+                c.statement.executeUpdate("INSERT INTO transactions VALUES ('" + pinno + "','" + formattedDate + "','withdraw','" + amount + "')");
 
                 // Notify user of successful withdrawal
                 JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
 
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Error during transaction.");
+                JOptionPane.showMessageDialog(null, "Error during transaction: " + ex.getMessage());
             }
 
             // After successful transaction, go back to the main screen
@@ -141,6 +141,7 @@ public class FastCash extends JFrame implements ActionListener {
             new Main(pinno);
         }
     }
+
 
     public static void main(String[] args) {
         new FastCash(" "); // Provide actual pinno here for testing
