@@ -80,12 +80,15 @@ public class Deposit extends JFrame implements ActionListener {
                     // Connect to the database and insert deposit
                     Conn c = new Conn();
                     String query = "INSERT INTO transactions (pin, date, type, amount) " +
-                                   "VALUES ('" + pin + "', '" + formattedDate + "', 'Deposit', '" + amount + "')";
+                                   "VALUES ('" + pin + "', '" + formattedDate + "', 'deposit', '" + amount + "')";
                     System.out.println("Executing query: " + query);  // Debugging query
                     c.statement.executeUpdate(query);
 
                     JOptionPane.showMessageDialog(null, "Rs. " + amount + " Deposited Successfully");
-                    setVisible(false); // Close deposit screen after deposit
+
+                    // After deposit, go to Main page and pass the pin
+                    new Main(pin); // Create an instance of the Main page and pass the pin
+                    setVisible(false); // Close the Deposit screen
                 }
             } else if (e.getSource() == b2) {
                 // Go back to the Main screen
