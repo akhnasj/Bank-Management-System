@@ -6,6 +6,7 @@ import java.sql.*;
 public class Conn {
     Connection connection;
     Statement statement;
+    public Object s;
     public Conn() {
         try{
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bank", "root", "toor");
