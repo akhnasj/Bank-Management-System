@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
+import java.sql.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +32,6 @@ public class Balance extends JFrame implements ActionListener {
         l3.setBounds(0, 0, 1550, 1080); // Ensure full frame coverage
         add(l3);
 
-
         // Add label to show the current balance
         JLabel label1 = new JLabel("YOUR CURRENT BALANCE IS: ");
         label1.setForeground(Color.white);
@@ -56,24 +55,39 @@ public class Balance extends JFrame implements ActionListener {
         l3.add(b1);
 
         // Calculate the balance by checking the deposits and withdrawals from the transactions database
-        int balance = 0;
+        double balance = 0.0; // Use double for proper handling of monetary values
         try {
             Conn c = new Conn();
-            ResultSet resultSet = c.statement.executeQuery("select * from transactions where pin = '" + pin + "'");
+            // Using PreparedStatement to prevent SQL injection
+            String query = "SELECT * FROM transactions WHERE pin = ?";
+            PreparedStatement stmt = c.connection.prepareStatement(query);
+            stmt.setString(1, pin); // Set the pin parameter securely
+
+            ResultSet resultSet = stmt.executeQuery();
+
             while (resultSet.next()) {
-                if (resultSet.getString("type").equals(("Deposit"))) {
-                    balance += Integer.parseInt(resultSet.getString("amount"));
-                } else {
-                    balance -= Integer.parseInt(resultSet.getString("amount"));
+                String type = resultSet.getString("type");
+                double amount = resultSet.getDouble("amount"); // Get the amount as a double
+                
+                // Debugging output
+                System.out.println("Transaction Type: " + type + ", Amount: " + amount);
+
+                if ("Deposit".equalsIgnoreCase(type)) {
+                    balance += amount; // Add deposit
+                } else if ("Withdraw".equalsIgnoreCase(type)) {
+                    balance -= amount; // Subtract withdrawal
                 }
             }
 
-        } catch (Exception e) {
+            // Close the statement and result set
+            stmt.close();
+            resultSet.close();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // Display balance in label2
-        label2.setText("₹" + balance);
+        label2.setText("₹ " + String.format("%.2f", balance)); // Format balance to show two decimal places
 
         // Set layout and frame properties
         setLayout(null);
@@ -93,6 +107,6 @@ public class Balance extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new Balance("1234"); // Example PIN number for testing
+        new Balance(""); // Example PIN number for testing
     }
 }
