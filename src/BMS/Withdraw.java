@@ -7,13 +7,13 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Withdraw extends JFrame implements ActionListener {
     String pin;
@@ -33,7 +33,6 @@ public class Withdraw extends JFrame implements ActionListener {
         JLabel l3 = new JLabel(backgroundImage);
         l3.setBounds(0, 0, 1550, 1080); // Ensure full frame coverage
         add(l3);
-
 
         // Label for maximum withdrawal limit
         JLabel label1 = new JLabel("MAXIMUM WITHDRAWAL IS RS.10,000");
@@ -86,47 +85,54 @@ public class Withdraw extends JFrame implements ActionListener {
             String amount = textField.getText();
             Date date = new Date();
 
+            // Format date to 'yyyy-MM-dd HH:mm:ss'
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = dateFormat.format(date); // Convert Date to formatted string
+
             // If Withdraw button is pressed
             if (e.getSource() == b1) {
                 if (textField.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Please enter the amount you want to withdraw");
                 } else {
-                    // Checking current balance
+                    // Checking current balance by querying the transactions table
                     Conn c = new Conn();
                     ResultSet resultSet = c.statement.executeQuery("select * from transactions where pin = '" + pin + "'");
-                    int balance = 0;
+
+                    double balance = 0;
                     while (resultSet.next()) {
-                        if (resultSet.getString("type").equals("Deposit")) {
-                            balance += Integer.parseInt(resultSet.getString("amount"));
-                        } else {
-                            balance -= Integer.parseInt(resultSet.getString("amount"));
+                        if (resultSet.getString("type").equals("deposit")) {
+                            balance += resultSet.getDouble("amount");
+                        } else if (resultSet.getString("type").equals("Withdraw")) {
+                            balance -= resultSet.getDouble("amount");
                         }
                     }
 
                     // Check if balance is sufficient
-                    if (balance < Integer.parseInt(amount)) {
+                    double withdrawalAmount = Double.parseDouble(amount);
+                    if (balance < withdrawalAmount) {
                         JOptionPane.showMessageDialog(null, "Insufficient Balance");
                         return;
                     }
 
-                    // Insert withdrawal into database
-                    c.statement.executeUpdate("insert into transactions values('" + pin + "','" + date + "', 'withdrawal', '" + amount + "')");
+                    // Insert withdrawal into database with formatted date
+                    c.statement.executeUpdate("insert into transactions (pin, date, type, amount) values('" + pin + "','" + formattedDate + "', 'withdraw', '" + amount + "')");
                     JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
 
                     // Close the current Withdraw screen
                     setVisible(false);
-                    // Optionally, you can create a new main class to go back
-                    // new Main(pin);
+                    // Go back to the main page
+                    new Main(pin);  // Pass pin to Main page
                 }
             }
             // If Back button is pressed
             else if (e.getSource() == b2) {
                 // Go back to the Main screen
-                new Main(pin); // Pass pin to Main page
+                new Main(pin);  // Pass pin to Main page
                 setVisible(false); // Hide the current Withdraw screen
             }
         } catch (Exception E) {
             E.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: " + E.getMessage());
         }
     }
 
