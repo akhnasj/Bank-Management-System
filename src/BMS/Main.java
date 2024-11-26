@@ -11,13 +11,13 @@ import javax.swing.JLabel;
 
 public class Main extends JFrame implements ActionListener{
 
-    JButton b1,b2,b3,b4,b5,b6,b7;
+    JButton b1, b2, b3, b4, b5, b6, b7;
     String pinno;
 
     Main(String pinno2){
 
         super("Transactions");
-        this.pinno=pinno2;
+        this.pinno = pinno2;
         /*label for asking transactions */
         JLabel label1 = new JLabel("PLEASE SELECT YOUR TRANSACTIONS");
         label1.setBounds(360,20,800,60);
@@ -43,7 +43,6 @@ public class Main extends JFrame implements ActionListener{
         b2.setBackground(Color.BLACK);
         add(b2);
 
-
         /*button for FastCash */
         b3 = new JButton("FAST CASH");
         b3.setBounds(170,330,450,50);
@@ -62,7 +61,6 @@ public class Main extends JFrame implements ActionListener{
         b4.setForeground(Color.WHITE);
         b4.setBackground(Color.BLACK);
         add(b4);
-
 
         /*button for balance enquiry */
         b5 = new JButton("BALANCE");
@@ -93,30 +91,27 @@ public class Main extends JFrame implements ActionListener{
         b7.addActionListener(this);
         add(b7);
 
-
-
         /*frame settings */
         setSize(1550,1080);
         setLayout(null);
         setLocation(0,0);
         setVisible(true);
-
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
        if(e.getSource()==b7){
             System.exit(0);
-        }else if(e.getSource()==b6){
+       }else if(e.getSource()==b6){
             new Pin(pinno);
             setVisible(false);
-        }else if(e.getSource()==b3){
+       }else if(e.getSource()==b3){
             new FastCash(pinno);
             setVisible(false);
-        }
+       }
     }
 
-public static void main(String[] args){
-    new Main(" ");
-}
+    public static void main(String[] args){
+        new Main(" ");
+    }
 }
