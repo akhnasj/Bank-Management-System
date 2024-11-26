@@ -1,3 +1,5 @@
+package BMS;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -109,7 +111,7 @@ public class Main extends JFrame implements ActionListener{
             new Pin(pinno);
             setVisible(false);
         }else if(e.getSource()==b3){
-            new Fastcash(pinno);
+            new FastCash(pinno);
             setVisible(false);
         }
     }
