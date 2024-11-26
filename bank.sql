@@ -41,9 +41,20 @@ CREATE TABLE login(
     card_no VARCHAR(50),
     pin VARCHAR(30)
 );
+
+CREATE TABLE transactions (
+    pin VARCHAR(30),
+    date DATETIME,
+    type VARCHAR(20),
+    amount DECIMAL(10,2)
+);
+
     
 SELECT * FROM signup_one;
 SELECT * FROM signup_two;
 SELECT * FROM signup_three;
-SELECT * FROM login;    
+SELECT * FROM login;  
+select * from transactions;
+
+  
     
