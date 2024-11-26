@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.sql.*;
 
 public class Pin extends JFrame implements ActionListener {
     JTextField t1, t2;
@@ -31,21 +32,18 @@ public class Pin extends JFrame implements ActionListener {
         label1.setForeground(Color.white);
         label1.setBounds(500, 210, 400, 35);
         label1.setFont(new Font("System", Font.BOLD, 20));
-        label1.setForeground(Color.WHITE); // Make text stand out on the background
         background.add(label1);
 
         JLabel label2 = new JLabel("New PIN: ");
         label2.setBounds(350, 280, 230, 50); 
         label2.setForeground(Color.white);
         label2.setFont(new Font("System", Font.BOLD, 18));
-        label2.setForeground(Color.WHITE); // Make text stand out on the background
         background.add(label2);
 
         JLabel label3 = new JLabel("Re-Enter PIN: ");
         label3.setForeground(Color.white);
         label3.setBounds(350, 350, 230, 50); 
         label3.setFont(new Font("System", Font.BOLD, 18));
-        label3.setForeground(Color.WHITE); // Make text stand out on the background
         background.add(label3);
 
         t1 = new JTextField();
@@ -53,14 +51,14 @@ public class Pin extends JFrame implements ActionListener {
         t1.setForeground(Color.WHITE);
         t1.setFont(new Font("Raleway", Font.BOLD, 22));
         t1.setBounds(520, 290, 320, 37);
-        background.add(t1); // Add to the background instead of JFrame
+        background.add(t1);
 
         t2 = new JTextField();
         t2.setBackground(new Color(65, 125, 128));
         t2.setForeground(Color.WHITE);
         t2.setFont(new Font("Raleway", Font.BOLD, 22));
         t2.setBounds(520, 360, 320, 37);
-        background.add(t2); // Add to the background instead of JFrame
+        background.add(t2);
 
         change = new JButton("CHANGE");
         change.setBounds(470, 455, 230, 35);
@@ -69,7 +67,7 @@ public class Pin extends JFrame implements ActionListener {
         change.setFont(new Font("System", Font.BOLD, 20));
         change.setFocusable(false);
         change.addActionListener(this);
-        background.add(change); // Add to the background instead of JFrame
+        background.add(change);
 
         back = new JButton("BACK");
         back.setBounds(470, 510, 230, 35);
@@ -78,7 +76,7 @@ public class Pin extends JFrame implements ActionListener {
         back.setFont(new Font("System", Font.BOLD, 20));
         back.setFocusable(false);
         back.addActionListener(this);
-        background.add(back); // Add to the background instead of JFrame
+        background.add(back);
 
         setVisible(true);
     }
@@ -89,6 +87,9 @@ public class Pin extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Connection connection = null;
+        PreparedStatement ps1 = null, ps2 = null, ps3 = null;
+        ResultSet rs = null;
         try {
             String p1 = t1.getText();
             String p2 = t2.getText();
@@ -112,17 +113,42 @@ public class Pin extends JFrame implements ActionListener {
                     return;
                 }
 
-                // Update PIN in the database
+                // Establish connection
                 Conn c = new Conn();
-                String q2 = "UPDATE login SET pinno = '" + p1 + "' WHERE pinno = '" + pinno + "'";
-                String q3 = "UPDATE signupthree SET pinno = '" + p1 + "' WHERE pinno = '" + pinno + "'";
+                connection = c.connection; // Get the connection
 
-                c.statement.executeUpdate(q2);
-                c.statement.executeUpdate(q3);
+                // Use PreparedStatement for SQL injection prevention
+                String query1 = "SELECT * FROM login WHERE pin = ?";
+                ps1 = connection.prepareStatement(query1);
+                ps1.setString(1, pinno);
+                rs = ps1.executeQuery();
 
-                JOptionPane.showMessageDialog(null, "PIN updated successfully.");
-                setVisible(false); // Close current window
-                new Main(pinno); // Navigate to the main screen with updated PIN
+                if (rs.next()) {
+                    // If pin found, proceed to update
+                    String query2 = "UPDATE login SET pin = ? WHERE pin = ?";
+                    ps2 = connection.prepareStatement(query2);
+                    ps2.setString(1, p1);
+                    ps2.setString(2, pinno);
+
+                    String query3 = "UPDATE signup_three SET pin = ? WHERE pin = ?";
+                    ps3 = connection.prepareStatement(query3);
+                    ps3.setString(1, p1);
+                    ps3.setString(2, pinno);
+
+                    int rowsUpdated1 = ps2.executeUpdate();
+                    int rowsUpdated2 = ps3.executeUpdate();
+
+                    if (rowsUpdated1 > 0 && rowsUpdated2 > 0) {
+                        JOptionPane.showMessageDialog(null, "PIN updated successfully.");
+                        setVisible(false); // Close current window
+                        new Main(pinno); // Navigate to the main screen with updated PIN
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to update PIN.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Old PIN not found in the database.");
+                }
+
             } else if (e.getSource() == back) {
                 new Main(pinno); // Go back to the main screen
                 setVisible(false); // Close current window
@@ -131,6 +157,17 @@ public class Pin extends JFrame implements ActionListener {
         } catch (Exception E) {
             E.printStackTrace();
             JOptionPane.showMessageDialog(null, "An error occurred while updating the PIN.");
+        } finally {
+            try {
+                // Ensure all resources are closed
+                if (rs != null) rs.close();
+                if (ps1 != null) ps1.close();
+                if (ps2 != null) ps2.close();
+                if (ps3 != null) ps3.close();
+                if (connection != null) connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
